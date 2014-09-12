@@ -53,3 +53,4 @@ com_crashlytics_export_strings.xml
 *.pyc
 __pycache__/
 local_settings.py
+venv/

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title></title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+
+        <div class="container">
+
+
+
+            <h1>Tópicos Especiais em Ambiente WEB</h1>
+
+            <div ng-app>
+                <h3>Com ng-app</h3>
+
+                <div ng-controller="HelloController">
+                    <button ng-click="incrementar()">Clicar</button>
+                    <label>Você clicou: {{ total }} veze(s)</label>
+
+                </div>
+
+                <div ng-controller="HelloController">
+                    <button ng-click="incrementar()">Clicar</button>
+                    <label>Você clicou: {{ total }} veze(s)</label>
+
+                </div>
+            </div>
+            <div>
+                <h3>Sem ng-app</h3>
+
+                <div ng-controller="HelloController">
+                    <button ng-click="incrementar()">Clicar</button>
+                    <label>Você clicou: {{ total }} veze(s)</label>
+
+                </div>
+
+                <h3>ng-app na mesma tag do ng-controller</h3>
+
+                <div ng-controller="HelloController" ng-app>
+                    <button ng-click="incrementar()">Clicar</button>
+                    <label>Você clicou: {{ total }} veze(s)</label>
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+            <script src="js/jquery.min.js"></script>
+            <script src="js/bootstrap.min.js"></script>
+            <script src="js/angular.js"></script>
+            <script src="libs/1.js"></script>
+    </body>
+</html>
