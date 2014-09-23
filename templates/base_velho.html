@@ -1,0 +1,98 @@
+{% extends "bare/base.html" %}
+
+{% load staticfiles %}
+
+{% block js_baixo %}
+    <script>
+        var app = angular.module("MyApp", []);
+
+
+        app.controller("PostsCtrl", function ($scope, $http) {
+            $http.defaults.headers.common["X-Custom-Header"] = "Angular.js";
+            $http.get('ajax/pessoas').
+                    success(function (data, status, headers, config) {
+                        console.log(data);
+                        $scope.pessoas = data;
+                    }).
+                    error(function (data, status, headers, config) {
+                        // log error
+                        console.log('erro ajax')
+                    });
+        });
+
+
+    </script>
+    <script>
+
+
+var formApp = angular.module("MeuForm", []);
+
+     formApp.controller("MeuFormController", function($scope, $http) {
+       $scope.formData = {};
+       $scope.formData.name = "Jakob Jenkov";
+       $scope.formData.car  = "nissan";
+
+     $scope.formData.submitTheForm = function(item, event) {
+       console.log("--> Submitting form");
+       var dataObject = {
+          nome : $scope.formData.nome
+         ,data_nascimento  : $scope.formData.data_nascimento
+       };
+
+       var responsePromise = $http.post("ajax/pessoas/", dataObject, {});
+       responsePromise.success(function(dataFromServer, status, headers, config) {
+          console.log(dataFromServer.nome);
+       });
+        responsePromise.error(function(data, status, headers, config) {
+          alert("Submitting form failed!");
+       });
+     }
+
+  });
+    </script>
+{% endblock js_baixo %}
+
+{% block conteudo %}
+    <div ng-app="MyApp">
+        <h2>Aqui começa o angular</h2>
+
+        <div ng-controller="PostsCtrl">
+            <ul ng-repeat="p in pessoas">
+                {% verbatim %}
+                <li>{{ p.nome }} - {{ p.data_nascimento }} - {{ p.idade }}</li>
+                {% endverbatim %}
+            </ul>
+        </div>
+    </div>
+    <div ng-app="MeuForm">
+        <div ng-controller="MeuFormController">
+            <form class="form-horizontal" role="form" ng-submit=formData.submitTheForm()">
+                <div class="form-group">
+                    <label for="nome" class="col-sm-2 control-label">Nome</label>
+
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="nome" ng-model="formData.nome"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="data_nascimento" class="col-sm-2 control-label">Data de Nascimento</label>
+
+                    <div class="col-sm-10">
+                        <input type="date" class="form-control" id="data_nascimento"
+                               ng-model="formData.data_nascimento"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Salvar</button>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+{% endblock conteudo %}
+
+

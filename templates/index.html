@@ -1,0 +1,14 @@
+{% extends "bare/base.html" %}
+
+
+
+
+{% block conteudo %}
+<form action="/" method="POST">
+{% csrf_token %}
+{{ form }}
+
+<button type="SUBMIT">Enviar</button>
+</form>
+
+{% endblock conteudo %}
