@@ -1,4 +1,4 @@
-from aniversario.views import PessoaListView, Home, router
+from aniversario.views import PessoaListView, Home, router, pizzas
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
@@ -11,6 +11,11 @@ urlpatterns = patterns('',
         Home.as_view()
         , name='home'
     ),
+    url(r'^pizzas/$',
+        pizzas
+        , name='pizzas'
+    ),
+
 
     url(r'^ajax/',
         include(router.urls)

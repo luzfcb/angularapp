@@ -1,111 +1,51 @@
-var app = angular.module("pizza", []);
+$('.ui.selection.dropdown').dropdown();
+$('.foto.image')
+  .transition('fade up')
+;
 
-app.config(['$httpProvider', function($httpProvider) {
+function capitaliseFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+var pizza_app = angular.module('pizza_app', []);
+pizza_app.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.headers.common['Access-Control-Allow-Headers'] = "Origin, X-Requested-With, Content-Type, Accept";
         $httpProvider.defaults.useXDomain = true;
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
         $httpProvider.defaults.timeout = 5000;
     }
 ]);
-app.factory('pizza', ['$http', '$q', function(http, q) {
-    var api_root = 'http://fratelli.herokuapp.com';
-    var per_page = 100;
 
-    return {
-//        getUser: function(username) {
-//            return http.get(api_root + '/users/' + username);
-//        },
-        getRepos: function(username) {
-            var repos_p = q.defer();
-            var url = api_root + '/pizzas/?format=json';
-            var repos = [];
-            console.log(url);
+pizza_app.controller('PizzaController2', function($scope, $http) {
+    //var base_url_api = 'http://fratelli.herokuapp.com';
+    var base_url_api = 'http://127.0.0.1:8000';
+    $http.get(base_url_api +'/pizzas/?format=json')
+       .then(function(res){
+          $scope.pizzas_data = res.data;
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        });
 
-            http.get(url).success(function(data) {
-                 console.log(data);
-                repos = repos.concat(data);
-            });
+});
 
-            repos_p.resolve(repos);
-            console.log(repos);
-            return repos_p.promise;
-        }
-        //,
-//        getRepo: function(repo) {
-//            return http.get(api_root + '/repos/' + repo);
-//        }
-    };
-}]);
+pizza_app.filter('primeiraMaiuscula', function() {
+        return function(string_qualquer) {
+            return string_qualquer.charAt(0).toUpperCase() + string_qualquer.slice(1);
+        };
+});
 
-app.directive('ghImg', function() {
+pizza_app.filter('monetario', function() {
+        return function(string_qualquer) {
+            return "R$ " + string_qualquer.replace('.', ',');
+        };
+});
+
+pizza_app.directive('pizzaImg', function() {
     return {
         restrict: 'E',
         scope: {
             'src': '='
         },
-        template: '<img src="{{ src }}" width="100">'
+        template: '<img class="foto image" src="{{ src }}" width="130">'
     };
 });
-
-app.filter('ago', function() {
-    return function(value) {
-        return moment(value).fromNow(true);
-    };
-});
-
-app.controller("PizzaController", ['$scope', 'pizza', function(scope, github) {
-    var config = document.body.dataset;
-
-    var week_half_life  = 1.146 * Math.pow(10, -9);
-    var push_weight = 1;
-    var watcher_weight = 1.314 * Math.pow(10, 7);
-    var now = new Date;
-
-//    var hotness = function(repo) {
-//        var push_delta = now - Date.parse(repo.pushed_at);
-//        var create_delta = now - Date.parse(repo.created_at);
-//
-//        var hotness = push_weight * Math.pow(Math.E, -1 * week_half_life * push_delta) + watcher_weight * repo.stargazers_count / create_delta;
-//        return hotness
-//    };
-
-    var valor_pizza = function(repo) {
-        return repo.valor;
-    };
-
-//    github.getUser(config.username).success(function(data) {
-//        scope.user = data;
-//    });
-
-    var repos = [];
-
-    var got_repos = function(data) {
-        repos = repos.concat(data);
-
-//        scope.recent = _.chain(repos)
-//            .sortBy(valor_pizza)
-//            .slice(-3)
-//            .reverse()
-//            .value()
-
-        scope.repos = _.chain(repos)
-            .sortBy(valor_pizza)
-            .reverse()
-            .value();
-
-//        scope.source_repos = _.filter(repos, function(repo) {
-//            return !repo.fork;
-//        }).length;
-    };
-    var got_repo = function(data) {
-        got_repos([data]);
-    };
-
-    github.getRepos(config.username).then(got_repos);
-//    if (config.additional) {
-        console.log('adicional');
-//        var extra = config.additional.split(',');
-//        _.each(extra, function(repo) {
-            github.getRepo(repo.trim()).success(got_repo);
-//        });
-//    }
-}]);

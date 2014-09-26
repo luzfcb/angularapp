@@ -1,35 +1,82 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html ng-app="pizza">
-	<head>
-		<title>luzfcb.github.io</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" type="text/css" href="{% static "novo/reset.css" %}">
-		<link rel="stylesheet" type="text/css" href="{% static "novo/grid.css" %}">
-		<link rel="stylesheet" type="text/css" href="{% static "novo/style.css" %}">
-	</head>
+<html ng-app="pizza_app">
+<head>
+    <title>Pizzas</title>
+    <meta charset="utf-8">
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700|Open+Sans:300italic,400,300,700'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="{% static "novo/reset.css" %}">
+    {#        <link rel="stylesheet" type="text/css" href="{% static "novo/bootstrap.min.css" %}">#}
+    <link rel="stylesheet" type="text/css" href="{% static "novo/semantic.min.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "novo/grid.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "novo/style.css" %}">
 
-	<body data-username="luzfcb" ng-controller="PizzaController" ng-cloak>
-    {% verbatim %}
-		<div id="wrapper" class="grid clearfix">
+</head>
 
-			<ol id="repos" ng-repeat="repo in repos">
-				<li class="repo grid-1 {{ repo.language.toLowerCase() }}">
-                            <p><gh-img src="repo.foto"></p>
-                                <h2>{{ repo.nome }}</h2>
+<body ng-controller="PizzaController2" ng-cloak>
+{% verbatim %}
+<div id="wrapper" class="grid clearfix">
+    <div id="main" class="grid-1">
+        <div class="ui small form segment">
+            <div class="two fields">
+                <div class="field">
+                    <label>Nome</label>
+                    <input placeholder="Nome da Pizza" type="text" ng-model="form.nome">
+                </div>
+                <div class="field">
+                    <label>Last Name</label>
+                    <input placeholder="Last Name" type="text">
+                </div>
+            </div>
+            <div class="ui blue small submit button">Submit</div>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="gender">
 
-                                <h3>{{ repo.tamanho }}</h3>
+                <div class="default text">Gender</div>
+                <i class="dropdown icon"></i>
 
-                                <p>{{ repo.valor }}</p>
-                                <p>{{ repo.ingredientes }}</p>
-				</li>
-			</ol>
-		</div>
-		{% endverbatim %}
-		<script type="text/javascript" src="{% static "novo/angular.min.js" %}"></script>
-		<script type="text/javascript" src="{% static "novo/moment.min.js" %}"></script>
-		<script type="text/javascript" src="{% static "novo/underscore.min.js" %}"></script>
+                <div class="menu ui transition hidden">
+
+                    <div class="item" data-value="male">Male</div>
+                </div>
+            </div>
+        </div>
+        <div class="ui small form segment">
+            <input type="text" ng-model="pesquisa" class="search-query" placeholder="Pesquisa">
+        </div>
+    </div>
+
+    <ol id="repos" ng-repeat="pizza in pizzas_data  | filter:pesquisa | orderBy:'tamanho'">
+
+        <li class="repo grid-1 {{ pizza.tamanho.toLowerCase() }}">
+            <p>
+                <pizza-img src="pizza.foto"></pizza-img>
+            </p>
+            <div class="ui two column grid">
+                <div class="column">
+                    <h1>{{ pizza.nome }}</h1>
+                </div>
+                <div class="column">
+                    {{ pizza.tamanho | primeiraMaiuscula }}
+                </div>
+            </div>
+
+
+            {{ pizza.valor | monetario }}
+
+            {{ pizza.ingredientes }}
+        </li>
+    </ol>
+</div>
+{% endverbatim %}
+
+<script type="text/javascript" src="{% static "novo/jquery.min.js" %}"></script>
+<script type="text/javascript" src="{% static "novo/semantic.min.js" %}"></script>
+<script type="text/javascript" src="{% static "novo/angular.min.js" %}"></script>
+<script type="text/javascript" src="{% static "novo/moment.min.js" %}"></script>
+<script type="text/javascript" src="{% static "novo/underscore.min.js" %}"></script>
 {#		<script type="text/javascript" src="{% static "novo/github.js" %}"></script>#}
-        <script type="text/javascript" src="{% static "novo/pizza.js" %}"></script>
-	</body>
+<script type="text/javascript" src="{% static "novo/pizza.js" %}"></script>
+</body>
 </html>

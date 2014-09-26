@@ -42,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'rest_framework',
     'djangular',
-    'django_admin_generator',
+    #'django_admin_generator',
     'aniversario',
 
 )

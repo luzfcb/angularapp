@@ -4,3 +4,4 @@ django-angular
 arrow
 django-braces
 djangorestframework
+django-suit
