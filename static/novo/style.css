@@ -43,7 +43,7 @@ strong {
 }
 
 #main {
-  height: 330px;
+  height: 380px;
   text-align: center;
 }
 
@@ -148,7 +148,7 @@ div.header h1 {
 }
 
 li.repo {
-  height: 220px;
+  height: 340px;
 }
 
 li.repo > a {
