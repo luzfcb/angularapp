@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html ng-app="pizza">
+	<head>
+		<title>luzfcb.github.io</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="{% static "novo/reset.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "novo/grid.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "novo/style.css" %}">
+	</head>
+
+	<body data-username="luzfcb" ng-controller="PizzaController" ng-cloak>
+    {% verbatim %}
+		<div id="wrapper" class="grid clearfix">
+
+			<ol id="repos" ng-repeat="repo in repos">
+				<li class="repo grid-1 {{ repo.language.toLowerCase() }}">
+                            <p><gh-img src="repo.foto"></p>
+                                <h2>{{ repo.nome }}</h2>
+
+                                <h3>{{ repo.tamanho }}</h3>
+
+                                <p>{{ repo.valor }}</p>
+                                <p>{{ repo.ingredientes }}</p>
+				</li>
+			</ol>
+		</div>
+		{% endverbatim %}
+		<script type="text/javascript" src="{% static "novo/angular.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "novo/moment.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "novo/underscore.min.js" %}"></script>
+{#		<script type="text/javascript" src="{% static "novo/github.js" %}"></script>#}
+        <script type="text/javascript" src="{% static "novo/pizza.js" %}"></script>
+	</body>
+</html>

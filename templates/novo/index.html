@@ -1,0 +1,71 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html ng-app="github">
+	<head>
+		<title>luzfcb.github.io</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="{% static "novo/reset.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "novo/grid.css" %}">
+		<link rel="stylesheet" type="text/css" href="{% static "novo/style.css" %}">
+	</head>
+
+	<body data-username="luzfcb" ng-controller="GithubController" ng-cloak>
+    {% verbatim %}
+		<div id="wrapper" class="grid clearfix">
+			<div id="main" class="grid-1">
+				<h1>
+					<p><gh-img src="user.avatar_url"></p>
+					{{ user.name }}
+				</h1>
+				<p ng-show="user.company">{{ user.company }}</p>
+				<p ng-show="user.location">{{ user.location }}</p>
+				<p ng-show="user.blog"><a href="{{ user.blog }}">{{ user.blog }}</a></p>
+				<p><br><br>Dashboard design by <a href="http://twitter.github.io">@twitter</a>.</p>
+			</div>
+
+			<div class="grid grid-3">
+				<div id="statistics" class="grid-1 alpha header">
+					<h1>Estatísticas</h1>
+					<p ng-show="user">
+						<a href="https://github.com/{{ user.login }}?tab=repositories"><span id="num-repos">{{ user.public_repos }}</span> repositórios públicos</a>
+						<br>
+						<a ng-show="source_repos" href="https://github.com/{{ user.login }}?tab=repositories"><span id="num-source-repos">{{ source_repos }}</span> source repos</a>
+						<br>
+						<strong>{{ user.created_at | ago }}</strong> no Github
+					</p>
+				</div>
+
+				<div id="recently-updated" class="grid-2 omega header">
+					<h1>Atualizado Recentemente <a href="https://github.com/{{ user.login }}/repositories">Veja todos no GitHub</a></h1>
+					<ol id="recently-updated-repos" ng-repeat="repo in recent">
+						<li>
+							<span class="name"><a href="{{ repo.html_url }}">{{ repo.name }}</a></span>
+							<span class="time"><a href="{{ repo.html_url }}/commits">{{ repo.pushed_at | date }}</a></span>
+							<span class="bullet">⋅</span>
+							<span class="watchers"><a href="{{ repo.html_url }}/stargazers">{{ repo.stargazers_count }} observadores</a></span>
+							<span class="bullet">⋅</span>
+							<span class="forks"><a href="{{ repo.html_url }}/network">{{ repo.forks_count }} forks</a></span>
+						</li>
+					</ol>
+				</div>
+			</div>
+
+			<ol id="repos" ng-repeat="repo in repos">
+				<li class="repo grid-1 {{ repo.language.toLowerCase() }}">
+					<a href="{{ repo.html_url }}">
+						<h2>{{ repo.name }}</h2>
+						<h3>{{ repo.language }}</h3>
+						<p>{{ repo.description }}</p>
+					</a>
+				</li>
+			</ol>
+
+		</div>
+		{% endverbatim %}
+		<script type="text/javascript" src="{% static "novo/angular.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "novo/moment.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "novo/underscore.min.js" %}"></script>
+		<script type="text/javascript" src="{% static "novo/github.js" %}"></script>
+        <script type="text/javascript" src="{% static "novo/pizza.js" %}"></script>
+	</body>
+</html>

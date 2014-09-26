@@ -20,7 +20,7 @@ class F(forms.ModelForm):
 
 class Home(generic.CreateView):
     model = Carro
-    template_name = 'index.html'
+    template_name = 'novo/base.html'
     success_url = '/'
 
 
